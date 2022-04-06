@@ -1,5 +1,19 @@
 <?php
 
+// MySQLとの接続
+function dbConnect()
+{
+    $link = mysqli_connect('db', 'book_log', 'pass', 'book_log');
+    if (!$link) {
+        echo 'Error: データベースに接続できません' . PHP_EOL;
+        echo 'Debugging error: ' . mysqli_connect_error() . PHP_EOL;
+        exit;
+    }
+
+    echo 'データベースと接続しました' . PHP_EOL;
+    return $link;
+}
+
 function createReview()
 {
     echo '読書ログを登録してください' . PHP_EOL;
@@ -43,6 +57,7 @@ function listReviews($reviews)
 }
 
 $reviews = [];
+$link = dbConnect();
 
 while (true) {
     echo '1. 読書ログを登録'. PHP_EOL;
@@ -58,6 +73,7 @@ while (true) {
         // 読書ログを表示
         listReviews($reviews);
     } elseif($num === '9') {
+        mysqli_close($link);
         break;
     }
 }
