@@ -1,30 +1,41 @@
 <?php
 
 // MySQLのvalidation設定
-function validate($reviews) 
-{
+function validate($reviews) {
     $errors = [];
-    // 書籍名の入力チェック
+    // 書籍名のバリデーション
     if (!strlen($reviews['title'])) {
-      $errors['title'] = '書籍名を入力してください' . PHP_EOL;
+      $errors['title'] = '書籍名を入力してください';
     } elseif ($reviews['title'] > 100) {
-      $errors['title'] = '書籍名は100文字以内で入力してください' . PHP_EOL;
+      $errors['title'] = '書籍名は100文字以内で入力してください';
     }
+  
+    // 評価のバリデーション
+    if (!is_int($reviews['score'])) {
+      $errors['score'] = '入力値は整数で入力してください'; 
+    } elseif ($reviews['score'] < 1 || $reviews['score'] > 5 ) {
+      $errors['score'] = '数値は1以上5以下の値を入力してください';
+    }
+  
+    // 著者名のバリデーション
+    if (!$reviews['author']) {
+      $errors['author'] = '著者名を入力してください';
+    } elseif ($reviews['author'] > 100) {
+      $errors['author'] = '著者名は100文字以内で入力してください';
+    }
+  
+    // 読書状況のバリデーション
+    // if (!in_array('未読', $reviews) || !in_array('読んでる', $reviews) || !in_array('読了', $reviews))
+    if (!in_array($reviews['status'], ['未読', '読んでる', '読了'], true)) {
+      $errors['status'] = '読書状況には、「未読」、「読んでる」、「読了」のいずれかを入力してください';
+    }
+  
+    // 感想に関するバリデーション
+    if (!$reviews['summary']) {
+      $errors['summary'] = '感想を入力してください';
+    }
+  
     return $errors;
-}
-
-// MySQLとの接続
-function dbConnect()
-{
-    $link = mysqli_connect('db', 'book_log', 'pass', 'book_log');
-    if (!$link) {
-        echo 'Error: データベースに接続できません' . PHP_EOL;
-        echo 'Debugging error: ' . mysqli_connect_error() . PHP_EOL;
-        exit;
-    }
-
-    echo 'データベースと接続しました' . PHP_EOL;
-    return $link;
 }
 
 function createReview($link)
@@ -93,6 +104,20 @@ function listReviews($reviews)
         echo '感想：' . $review['summary'] . PHP_EOL;
         echo '-------------' . PHP_EOL;
     }
+}
+
+// MySQLとの接続
+function dbConnect()
+{
+    $link = mysqli_connect('db', 'book_log', 'pass', 'book_log');
+    if (!$link) {
+        echo 'Error: データベースに接続できません' . PHP_EOL;
+        echo 'Debugging error: ' . mysqli_connect_error() . PHP_EOL;
+        exit;
+    }
+
+    echo 'データベースと接続しました' . PHP_EOL;
+    return $link;
 }
 
 $reviews = [];
