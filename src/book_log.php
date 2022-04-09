@@ -93,10 +93,14 @@ function createReview($link)
     }
 }
 
-function listReviews($reviews)
+function listReviews($link)
 {
     echo '登録されている読書ログを表示します' . PHP_EOL;
-    foreach ($reviews as $review) {
+
+    $sql = 'SELECT id, title, author, status, score, summary FROM reviews';
+    $results = mysqli_query($link, $sql);
+
+    while ($review = mysqli_fetch_assoc($results)) {
         echo '書籍名：' . $review['title'] . PHP_EOL;
         echo '著者名：' . $review['author'] . PHP_EOL;
         echo '読書状況：' . $review['status'] . PHP_EOL;
@@ -104,6 +108,8 @@ function listReviews($reviews)
         echo '感想：' . $review['summary'] . PHP_EOL;
         echo '-------------' . PHP_EOL;
     }
+
+    mysqli_free_result($results);
 }
 
 // MySQLとの接続
@@ -135,7 +141,7 @@ while (true) {
         $reviews[] = createReview($link);
     } elseif ($num === '2') {
         // 読書ログを表示
-        listReviews($reviews);
+        listReviews($link);
     } elseif($num === '9') {
         mysqli_close($link);
         break;
