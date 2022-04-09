@@ -1,44 +1,60 @@
 <?php
-// 読書ログサービスに、番号2を選択された際に読書ログを表示する処理を記載しましょう。
-// 番号2を選択すると、下記が表示されれば成功です。
+// 【クイズ】複数の読書ログを表示しよう
 
-// 登録されている読書ログを表示します
-// 書籍名：
-// 著者名：
-// 読書状況：
-// 評価：
-// 感想：
+// 読書ログサービスを、登録された複数の読書ログを表示できるように修正しましょう。
+
+// 複数の読書ログを表示してください
+// 複数の読書ログの区切り線として "-------------" を各読書ログの下に表示してください
+// 使用しなくなった変数があれば削除しておいてください
+// 確認用に追記した var_export は削除ください
 
 $title = '';
 $author = '';
 $status = '';
 $score = '';
 $summary = '';
+$lists = [];
 
-echo '読書ログを登録してください'. PHP_EOL;
-echo '1.読書ログを登録する'. PHP_EOL;
-echo '2.読書ログを表示する'. PHP_EOL;
-echo '9.読書ログを終了する'. PHP_EOL;
-$num = trim(fgets(STDIN));
+while(true) {
+    echo '読書ログを登録してください'. PHP_EOL;
+    echo '1.読書ログを登録する'. PHP_EOL;
+    echo '2.読書ログを表示する'. PHP_EOL;
+    echo '9.読書ログを終了する'. PHP_EOL;
+    $num = trim(fgets(STDIN));
+    
+    if ($num === '1') {
+        echo '書籍名：';
+        $title = trim(fgets(STDIN));
+        echo '著者名：';
+        $author = trim(fgets(STDIN));
+        echo '読書状況（未読,読んでる,読了）：';
+        $status = trim(fgets(STDIN));
+        echo '評価（5点満点の整数）：';
+        $score = trim(fgets(STDIN));
+        echo '感想：';
+        $summary = trim(fgets(STDIN));
+        echo '登録が完了しました';
 
-if ($num === '1') {
-    echo '書籍名：';
-    $title = trim(fgets(STDIN));
-    echo '著者名：';
-    $author = trim(fgets(STDIN));
-    echo '読書状況（未読,読んでる,読了）：';
-    $status = trim(fgets(STDIN));
-    echo '評価（5点満点の整数）：';
-    $score = trim(fgets(STDIN));
-    echo '感想：';
-    $summary = trim(fgets(STDIN));
-    echo '登録が完了しました';
-} elseif ($num === '2') {
-    echo '読書ログを表示します'. PHP_EOL;
-    echo '書籍名：' . $title . PHP_EOL;
-    echo '著者名：' . $author . PHP_EOL;
-    echo '読書状況（未読,読んでる,読了）：' . $status . PHP_EOL;
-    echo '評価（5点満点の整数）：' . $score . PHP_EOL;
-    echo '感想：' . $summary . PHP_EOL;
+        $lists[] = [
+            'title' => $title,
+            'author' => $author,
+            'status' => $status,
+            'score' => $score,
+            'summary' => $summary
+        ];
+    } elseif ($num === '2') {
+      echo '読書ログを表示します'. PHP_EOL;
+
+      foreach ($lists as $list) {
+            echo '書籍名：' . $list['title'] . PHP_EOL;
+            echo '著者名：' . $list['author'] . PHP_EOL;
+            echo '読書状況（未読,読んでる,読了）：' . $list['status'] . PHP_EOL;
+            echo '評価（5点満点の整数）：' . $list['score'] . PHP_EOL;
+            echo '感想：' . $list['summary'] . PHP_EOL;
+            echo "-------------" . PHP_EOL;
+          }
+    } elseif ($num === '9') {
+        break;
+    }
 }
 
