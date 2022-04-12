@@ -1,5 +1,4 @@
 <?php
-
 // MySQLのvalidation設定
 function validate($reviews) {
     $errors = [];
@@ -25,7 +24,6 @@ function validate($reviews) {
     }
   
     // 読書状況のバリデーション
-    // if (!in_array('未読', $reviews) || !in_array('読んでる', $reviews) || !in_array('読了', $reviews))
     if (!in_array($reviews['status'], ['未読', '読んでる', '読了'], true)) {
       $errors['status'] = '読書状況には、「未読」、「読んでる」、「読了」のいずれかを入力してください';
     }
