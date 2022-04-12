@@ -59,6 +59,23 @@ function validate($review)
         $errors['author'] = '著者名は50文字以内で入力してください';
     }
 
+    // 評価が正しく入力されているかチェック
+    if ($review['score'] < 1 || $review['score'] > 5) {
+      $errors['score'] = '評価は1〜5の整数を入力してください';
+    }
+
+  // 読書状況
+  if (!in_array($review['status'], ['未読', '読んでる', '読了'], true)) {
+    $errors['status'] = '読書状況には、「未読」、「読んでる」、「読了」のいずれかを入力してください';
+  }
+
+    // 感想が正しく入力されているかチェック
+  if (!strlen($review['summary'])) {
+      $errors['summary'] = '感想を入力してください';
+  } elseif (strlen($review['summary']) > 10000) {
+      $errors['summary'] = '感想は10,000文字以内で入力してください';
+  }
+
     return $errors;
 }
 
