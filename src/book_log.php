@@ -1,5 +1,4 @@
 <?php
-
 // MySQLのvalidation設定
 function validate($reviews) {
     $errors = [];
@@ -12,7 +11,7 @@ function validate($reviews) {
   
     // 評価のバリデーション
     if (!is_int($reviews['score'])) {
-      $errors['score'] = '入力値は整数で入力してください'; 
+      // $errors['score'] = '入力値は整数で入力してください'; 
     } elseif ($reviews['score'] < 1 || $reviews['score'] > 5 ) {
       $errors['score'] = '数値は1以上5以下の値を入力してください';
     }
@@ -25,7 +24,6 @@ function validate($reviews) {
     }
   
     // 読書状況のバリデーション
-    // if (!in_array('未読', $reviews) || !in_array('読んでる', $reviews) || !in_array('読了', $reviews))
     if (!in_array($reviews['status'], ['未読', '読んでる', '読了'], true)) {
       $errors['status'] = '読書状況には、「未読」、「読んでる」、「読了」のいずれかを入力してください';
     }
@@ -123,6 +121,7 @@ function dbConnect()
     }
 
     echo 'データベースと接続しました' . PHP_EOL;
+
     return $link;
 }
 
